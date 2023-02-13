@@ -1,0 +1,24 @@
+﻿@model EventScheduler.Models.Note
+
+<div class="modal fade" id="CreateNote">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="addNoteLabel">Dodaj notatke</h4>
+                <button type="button" class="close" data-dismiss="modal"><span>x</span></button>
+            </div>
+            <div class="modal-body">
+                <form asp-action="CreateNote" asp-controller="Home">
+                    <div class="form-group">
+                        <label asp-for="Description">Opis</label>
+                        <input id="descInput" asp-for="Description" class="form-control" />
+                        <span asp-validation-for="Description" class="text-danger"></span>
+                    </div>
+                    <button type="button" class="btn btn-primary" data-dismiss="modal">Anuluj</button>
+                    <input type="submit" class="btn btn-primary" value="Dodaj" data-save="modal" />
+                </form>
+            </div>
+            <div class="modal-footer"></div>
+        </div>
+    </div>
+</div>

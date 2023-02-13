@@ -1,0 +1,69 @@
+﻿@model IEnumerable<EventScheduler.Models.CalendarEvent>
+@{
+    ViewData["Title"] = "Strona główna";
+}
+@{
+    DateTime dt = ViewBag.Date;
+    DateTime nextDate = dt.AddDays(1);
+    DateTime prevDate = dt.AddDays(-1);
+}
+
+<div id="PlaceHolderHere"></div>
+<div id="PlaceHolderDetails"></div>
+
+<div class="content" style="background-color: lightslategrey; border-radius: 15px; padding: 20px; width: 132%; float: left; margin-top: 50px; -webkit-box-shadow: 8px 8px 24px 0px rgba(66, 68, 90, 1); -moz-box-shadow: 8px 8px 24px 0px rgba(66, 68, 90, 1); box-shadow: 8px 8px 24px 0px rgba(66, 68, 90, 1);">
+    <div class="row" style="margin: auto; text-align: center">
+        <div style="width:35%; float: left;">
+            <div class="btn-group" role="group" style="margin-right: 20px;">
+                <a asp-controller="Home" asp-action="Day" asp-route-year="@prevDate.Year" asp-route-month="@prevDate.Month" asp-route-day="@prevDate.Day"><button type="button" class="btn btn-secondary"><<<</button></a>
+                <a asp-controller="Home" asp-action="Day" asp-route-year="@nextDate.Year" asp-route-month="@nextDate.Month" asp-route-day="@nextDate.Day"><button type="button" class="btn btn-secondary">>>></button></a>
+            </div>
+            <div class="btn-group" role="group">
+                <a asp-area="" asp-controller="Home" asp-action="Index"><button type="button" class="btn btn-secondary">Miesiąc</button></a>
+                <a asp-area="" asp-controller="Home" asp-action="Week"><button type="button" class="btn btn-secondary">Tydzień</button></a>
+                <a asp-area="" asp-controller="Home" asp-action="Day"><button type="button" class="btn btn-secondary">Dzień</button></a>
+            </div>
+        </div>
+        <div style="width: 35%; font-size:25px;">
+            <p class="text-primaryt text-white"></p>
+        </div>
+        <div style="floar: right; width:30%; padding-left:0px; margin-left:0px;">
+            <button type="button" class="btn btn-primary" data-toggle="ajax-modal" data-target="#addEvent" data-url="@Url.Action("GetEvent")">Dodaj zadanie</button>
+        </div>
+    </div>
+    <div class="row week" style="margin-top:15px;">
+        <div class="card text-white bg-primary day weekday" style="width:90%;">
+            @if (dt == DateTime.Today)
+            {
+                <div class="card-header" style="font-size: 20px; background-color: #023e7d;">@dt.ToString("D")</div>
+            }
+            else
+            {
+                <div class="card-header" style="font-size: 20px;">@dt.ToString("D")</div>
+            }
+        <div class="card-body">
+            @foreach (var x in Model)
+            {
+                @if (x.Date == dt)
+                {
+                    var id = x.Id;
+                    string color = x.Color.ToString();
+                        <div class="event" style="min-height: 5rem; background-color:@color;">
+                            <div style="width: 50%; display: inline-block; padding-left: 1.5rem;padding-top:1.5rem"><span style="font-size: 25px;">@x.Name</span></div>
+                            <div class="btn-group" role="group" style="float:right; height: 5rem; width: 8rem;">
+                                <button type="button" class="btn-secondary delButton" style="height: 5rem; width: 4rem;" data-toggle="detail-modal" data-target="#eventDetail" data-url="@Url.Action($"GetEventById/{x.Id}")">?</button>
+                                <div style="height: 5rem; width: 4rem;">
+                                    <form asp-action="DeleteEvent" style="height: 5rem; width: 4rem;">
+                                        <input type="hidden" asp-for="@id" />
+                                        <input type="submit" value="X" class="btn-danger delButton" style="height: 5rem; width: 4rem;" />
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                 }
+             }
+         </div>
+        </div>
+    </div>
+</div>
+    <partial name="_notes" />

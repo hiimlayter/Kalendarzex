@@ -1,0 +1,57 @@
+﻿@page
+@model LoginModel
+
+@{
+    ViewData["Title"] = "Zaloguj sie";
+}
+
+<h1 style="padding-top: 50px">Zaloguj się</h1>
+<div class="row" style="padding-top: 50px">
+    <div class="col-md-4">
+        <section>
+            <form id="account" method="post">
+                <h4>Zaloguj się na swoje konto</h4>
+                <hr />
+                <div asp-validation-summary="All" class="text-danger"></div>
+                <div class="form-group">
+                    <label asp-for="Input.Email">Adres E-mail</label>
+                    <input asp-for="Input.Email" class="form-control" />
+                    <span asp-validation-for="Input.Email" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Input.Password">Hasło</label>
+                    <input asp-for="Input.Password" class="form-control" />
+                    <span asp-validation-for="Input.Password" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <div class="checkbox">
+                        <label asp-for="Input.RememberMe">
+                            <input asp-for="Input.RememberMe" />
+                            Zapamiętaj mnie
+                        </label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <button type="submit" class="btn btn-primary">Zaloguj</button>
+                </div>
+                <div class="form-group">
+                    <p>
+                        <a asp-page="./Register" asp-route-returnUrl="@Model.ReturnUrl">Nie masz konta? Zarejestruj się!</a>
+                    </p>
+                </div>
+            </form>
+        </section>
+    </div>
+    <div class="col-md-6 col-md-offset-2">
+        <section>
+            <h4>Dziękujemy za korzystanie z naszych usług.</h4>
+            <hr />
+            <p style="padding:15px;">Codziennie dokładamy wszelkich starań aby sprostać twoim oczekiwaniom!</p>
+            <img src="https://www.clarisoft.com/wp-content/uploads/2017/05/in-house-programmers-vs-dedicated-teams.jpg" height="400"/>
+        </section>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

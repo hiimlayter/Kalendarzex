@@ -1,0 +1,39 @@
+﻿@{
+    List<Note> notes = ViewBag.Notes;
+}
+
+<div id="NoteHere"></div>
+<div id="NoteDetails"></div>
+
+<div class="notes">
+    <div class="row" style="margin: auto; padding:1rem; margin-bottom:0px;">
+        <h1 class="text-white" style="width: 55%; font-size: 42px;">Notatki</h1>
+        <div style="floar: right; width:45%; padding-left:0px; margin-right:0px; margin-top:3px;">
+            <button type="button" class="btn btn-primary" data-toggle="note-modal" data-target="#NoteHere" data-url="@Url.Action("GetNote")">Dodaj notatke</button>
+        </div>
+        <hr>
+    </div>
+    <hr style="margin-top: 0px;height: 3px; background-color: #ccc; border: none;" />
+    <div style="margin-left: 0.8rem;">
+        @foreach (var i in notes)
+        {
+            var id = i.Id;
+            <div class="card border-info mb-3" style="max-width: 20rem;">
+                <div class="card-header" style="padding: 0px; margin: 0px;">
+                    <div>
+                        <button type="button" class="btn-secondary" data-toggle="notedet-modal" data-target="#NoteDetail" data-url="@Url.Action($"GetNoteById/{i.Id}")")" style="width: 50%; height:2rem;"><b>?</b></button>
+                        <div style="width:50%; float:right;">
+                            <form asp-action="DeleteNote">
+                                <input type="hidden" asp-for="@id" />
+                                <input type="submit" value="X" class="btn-danger" style="width: 100%; color: white; height:2rem;" />
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <p class="card-text" style="font-size:18px;">@i.Description</p>
+                </div>
+            </div>
+        }
+    </div>
+</div>

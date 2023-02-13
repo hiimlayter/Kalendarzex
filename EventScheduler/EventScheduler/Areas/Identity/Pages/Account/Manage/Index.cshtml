@@ -1,0 +1,19 @@
+﻿@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Profil";
+    ViewData["ActivePage"] = ManageNavPages.Index;
+}
+
+<partial name="_StatusMessage" model="Model.StatusMessage" />
+<div class="row">
+    <section>
+        <h4>Witaj w panelu ustawień konta.</h4>
+        <p>W tym miejscu możesz zmieniac ustawienia swojego konta takie jak hasło oraz email, a także masz możliwość całkowitego usunięcia konta.</p>
+        <img src="https://st.depositphotos.com/1005171/3213/i/600/depositphotos_32133201-stock-photo-settings-apps-icon.jpg" height="400" />
+    </section>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

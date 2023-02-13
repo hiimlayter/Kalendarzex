@@ -1,0 +1,198 @@
+﻿@model IEnumerable<EventScheduler.Models.CalendarEvent>
+@{
+    ViewData["Title"] = "Strona główna";
+}
+@{
+    DateTime dt = ViewBag.Date;
+    int daysInMonth = DateTime.DaysInMonth(dt.Year, dt.Month);
+    DateTime firstDay = new DateTime(dt.Year, dt.Month, 1);
+    int weekDay = ((int)firstDay.DayOfWeek);
+    DateTime nextDate = dt.AddMonths(1);
+    DateTime prevDate = dt.AddMonths(-1);
+    int dayCounter = 1;
+}
+
+<div id="PlaceHolderHere"></div>
+<div id="PlaceHolderDetails"></div>
+
+<div class="content" style="background-color: lightslategrey; border-radius: 15px; padding: 20px; width: 132%; float: left; margin-top: 50px; -webkit-box-shadow: 8px 8px 24px 0px rgba(66, 68, 90, 1); -moz-box-shadow: 8px 8px 24px 0px rgba(66, 68, 90, 1); box-shadow: 8px 8px 24px 0px rgba(66, 68, 90, 1);">
+    <div class="row" style="margin: auto; text-align: center">
+        <div style="width:35%; float: left;">
+            <div class="btn-group" role="group" style="margin-right: 20px;">
+                <a asp-controller="Home" asp-action="Index" asp-route-year="@prevDate.Year" asp-route-month="@prevDate.Month"><button type="button" class="btn btn-secondary"><<<</button></a>
+                <a asp-controller="Home" asp-action="Index" asp-route-year="@nextDate.Year" asp-route-month="@nextDate.Month"><button type="button" class="btn btn-secondary">>>></button></a>
+            </div>
+            <div class="btn-group" role="group">
+                <a asp-area="" asp-controller="Home" asp-action="Index"><button type="button" class="btn btn-secondary">Miesiąc</button></a>
+                <a asp-area="" asp-controller="Home" asp-action="Week"><button type="button" class="btn btn-secondary">Tydzień</button></a>
+                <a asp-area="" asp-controller="Home" asp-action="Day"><button type="button" class="btn btn-secondary">Dzień</button></a>
+</div>
+        </div>
+        <div style="width: 35%; font-size:25px;">
+            <p class="text-primaryt text-white">@dt.Year @dt.ToString("MMMM")</p>
+        </div>
+        <div style="floar: right; width:30%; padding-left:0px; margin-left:0px;">
+            <button type="button" class="btn btn-primary" data-toggle="ajax-modal" data-target="#addEvent" data-url="@Url.Action("GetEvent")">Dodaj zadanie</button>
+        </div>
+    </div>
+    <div class="row" style="margin-top: 10px;">
+        <div class="card text-black-50 bg-secondary mb-3" style="width: 12.5rem; height: auto; float: left; margin: auto; text-align: center;">
+            <div class="card-body" style="background-color: dimgrey; color:white;">
+                <h5>Niedziela</h5>
+            </div>
+        </div>
+        <div class="card text-black-50 bg-secondary mb-3" style="width: 12.5rem; height: auto; float: left; margin: auto; text-align: center; margin-top: 10px; ">
+            <div class="card-body" style="background-color: dimgrey; color:white;">
+                <h5>Poniedziałek</h5>
+            </div>
+        </div>
+        <div class="card text-black-50 bg-secondary mb-3" style="width: 12.5rem; height: auto; float: left; margin: auto; text-align: center; ">
+            <div class="card-body" style="background-color: dimgrey; color:white;">
+                <h5>Wtorek</h5>
+            </div>
+        </div>
+        <div class="card text-black-50 bg-secondary mb-3" style="width: 12.5rem; height: auto; float: left; margin: auto; text-align: center; ">
+            <div class="card-body" style="background-color: dimgrey; color:white;">
+                <h5>Środa</h5>
+            </div>
+        </div>
+        <div class="card text-black-50 bg-secondary mb-3" style="width: 12.5rem; height: auto; float: left; margin: auto; text-align: center; ">
+            <div class="card-body" style="background-color: dimgrey; color:white;">
+                <h5>Czwartek</h5>
+            </div>
+        </div>
+        <div class="card text-black-50 bg-secondary mb-3" style="width: 12.5rem; height: auto; float: left; margin: auto; text-align: center; ">
+            <div class="card-body" style="background-color: dimgrey; color:white;">
+                <h5>Piątek</h5>
+            </div>
+        </div>
+        <div class="card text-black-50 bg-secondary mb-3" style="width: 12.5rem; height: auto; float: left; margin: auto; text-align: center; ">
+            <div class="card-body" style="background-color: dimgrey; color:white;">
+                <h5>Sobota</h5>
+            </div>
+        </div>
+    </div>
+
+    <div class="row week" style="font-size: 15px">
+        @for (var i = 0; i < weekDay; i++)
+        {
+            <div class="card text-black-50 bg-secondary day">
+                <div class="card-body">
+                </div>
+            </div>
+        }
+        @for (var i = weekDay; i <= 6; i++)
+        {
+
+
+
+
+    <div class="card text-white bg-primary day">
+       <div class="card-header">@dayCounter</div>
+        <div class="card-body">
+            @foreach (var x in Model)
+            {
+                @if (x.Date == new DateTime(dt.Year, dt.Month, dayCounter))
+                {
+                    var id = x.Id;
+                    string color = x.Color.ToString();
+                    <div class="event" style="background-color:@color;">
+                        <div style="width: 50%; display: inline-block; padding-left: 0.5rem;padding-top:0.3rem"><span style="font-size: 15px;">@x.Name</span></div>
+                        <div class="btn-group" role="group" style="float:right;">
+                            <button type="button" class="btn-secondary delButton" data-toggle="detail-modal" data-target="#eventDetail" data-url="@Url.Action($"GetEventById/{x.Id}")">?</button>
+                            <div>
+                                <form asp-action="DeleteEvent">
+                                    <input type="hidden" asp-for="@id" />
+                                    <input type="submit" value="X" class="btn-danger delButton" />
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                }
+            }
+        </div>
+    </div>
+            dayCounter++;
+        }
+    </div>
+
+    @while (dayCounter + 7 <= daysInMonth)
+    {
+        <div class="row week" style="font-size: 15px">
+            @for (var i = 0; i <= 6; i++)
+            {
+                <div class="card text-white bg-primary day">
+                   <div class="card-header">@dayCounter</div>
+                    <div class="card-body">
+                        @foreach (var x in Model)
+                        {
+                            @if (x.Date == new DateTime(dt.Year, dt.Month, dayCounter))
+                            {
+                                var id = x.Id;
+                                string color = x.Color.ToString();
+                                <div class="event" style="background-color:@color;">
+                                    <div style="width: 50%; display: inline-block; padding-left: 0.5rem;padding-top:0.3rem"><span style="font-size: 15px;">@x.Name</span></div>
+                                    <div class="btn-group" role="group" style="float:right;">
+                                        <button type="button" class="btn-secondary delButton" data-toggle="detail-modal" data-target="#eventDetail" data-url="@Url.Action($"GetEventById/{x.Id}")">?</button>
+                                        <div>
+                                            <form asp-action="DeleteEvent">
+                                                <input type="hidden" asp-for="@id" />
+                                                <input type="submit" value="X" class="btn-danger delButton" />
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                        }
+                    </div>
+                </div>
+                dayCounter++;
+            }
+        </div>
+    }
+    @{
+        int fillDays = (dayCounter + 6) - daysInMonth;
+    }
+    <div class="row week" style="font-size: 15px">
+        @while (dayCounter <= daysInMonth)
+        {
+
+
+        <div class="card text-white bg-primary day">
+            <div class="card-header">@dayCounter</div>
+            <div class="card-body">
+                @foreach (var x in Model)
+                {
+                    @if (x.Date == new DateTime(dt.Year, dt.Month, dayCounter))
+                    {
+                        var id = x.Id;
+                        string color = x.Color.ToString();
+                        <div class="event" style="background-color:@color;">
+                            <div style="width: 50%; display: inline-block; padding-left: 0.5rem;padding-top:0.3rem"><span style="font-size: 15px;">@x.Name</span></div>
+                            <div class="btn-group" role="group" style="float:right;">
+                                <button type="button" class="btn-secondary delButton" data-toggle="detail-modal" data-target="#eventDetail" data-url="@Url.Action($"GetEventById/{x.Id}")">?</button>
+                                <div>
+                                    <form asp-action="DeleteEvent">
+                                        <input type="hidden" asp-for="@id" />
+                                        <input type="submit" value="X" class="btn-danger delButton" />
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                }
+            </div>
+        </div>
+            dayCounter++;
+        }
+        @for (var i = 0; i < fillDays; i++)
+        {
+            <div class="card text-black-50 bg-secondary day">
+                <div class="card-body">
+                </div>
+            </div>
+        }
+    </div>
+</div>
+<partial name="_notes" />
+

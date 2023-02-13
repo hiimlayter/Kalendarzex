@@ -1,0 +1,54 @@
+﻿@model EventScheduler.Models.CalendarEvent
+
+<div class="modal" id="eventDetail">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Szczegóły wydarzenia</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form asp-action="EditEvent">
+                    <div class="form-group">
+                        <input type="hidden" asp-for="@Model.Id" />
+                        <label asp-for="Name">Tytuł</label>
+                        <input id="nameInput" asp-for="Name" class="form-control" />
+                        <span asp-validation-for="Name" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="isFullDay">Wydarzenie całodniowe</label>
+                        <input id="boolInput" type="checkbox" asp-for="isFullDay" class="form-control" />
+                        <span asp-validation-for="isFullDay" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Description">Opis</label>
+                        <input id="descInput" asp-for="Description" class="form-control" />
+                        <span asp-validation-for="Description" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Color">Kolor</label>
+                        <select id="colorInput" asp-for="Color" class="form-control">
+                            <option selected value="LimeGreen">Zielony</option>
+                            <option value="MediumOrchid">Fioletowy</option>
+                            <option value="CornflowerBlue">Niebieski</option>
+                            <option value="Gold">Złoty</option>
+                            <option value="FireBrick">Czerwony</option>
+                        </select>
+                        <span asp-validation-for="Color" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Date">Data</label>
+                        <input id="dateInput" asp-for="Date" type="date" asp-format="{0:yyyy-MM-dd}" class="form-control" />
+                        <span asp-validation-for="Date" class="text-danger"></span>
+                    </div>
+                    <button type="button" class="btn btn-primary" data-dismiss="modal">Zamknij</button>
+                    <input type="submit" class="btn btn-primary" value="Zapisz zmiany" data-save="modal" />
+                </form>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
